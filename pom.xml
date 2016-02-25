@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com</groupId>
-  <artifactId>dev-base</artifactId>
+  <artifactId>jfinal-base</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>dev-base</name>
+  <name>jfinal-base</name>
   <url>http://maven.apache.org</url>
 
   <properties>
