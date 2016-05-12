@@ -1,5 +1,11 @@
 package com.demo.common.model;
 
+import com.jfinal.base.common.model.SysButton;
+import com.jfinal.base.common.model.SysMenu;
+import com.jfinal.base.common.model.SysRole;
+import com.jfinal.base.common.model.SysRoleResource;
+import com.jfinal.base.common.model.SysUser;
+import com.jfinal.base.common.model.SysUserRole;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 
 /**
@@ -17,6 +23,12 @@ public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("blog", "id", Blog.class);
+		arp.addMapping("sys_button", "button_id", SysButton.class);
+		arp.addMapping("sys_menu", "menu_id", SysMenu.class);
+		arp.addMapping("sys_role", "role_id", SysRole.class);
+		arp.addMapping("sys_role_resource", "id", SysRoleResource.class);
+		arp.addMapping("sys_user", "user_id", SysUser.class);
+		arp.addMapping("sys_user_role", "id", SysUserRole.class);
 	}
 }
 

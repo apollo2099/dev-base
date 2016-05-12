@@ -62,7 +62,14 @@
 		<version>8.0.15</version>
 		<scope>runtime</scope>
 	</dependency>
-	
+	<!-- jsp -->
+	<dependency>
+		<groupId>org.eclipse.jetty</groupId>
+		<artifactId>jetty-jsp</artifactId>
+		<version>8.1.8.v20121106</version>
+		<scope>provided</scope>
+	</dependency>
+	<!-- jsp -->     
   </dependencies>
   
   
