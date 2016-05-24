@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib  uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <!DOCTYPE HTML>
 <html>
 <head>
 <jsp:include page="/common/_meta.jsp"></jsp:include>
-<title>H-ui.admin v2.4</title>
+<title>基础管理平台</title>
 <meta name="keywords" content="H-ui.admin v2.4,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
 <meta name="description" content="H-ui.admin v2.4，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
@@ -14,6 +15,7 @@
 <!-- 菜单文件 -->
 <jsp:include page="/common/_menu.jsp"></jsp:include>
 
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
 <!--  -->
 <section class="Hui-article-box">
 	<div id="Hui-tabNav" class="Hui-tabNav hidden-xs">
