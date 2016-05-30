@@ -11,8 +11,8 @@ import com.jfinal.core.Controller;
 @Before(BlogInterceptor.class)
 public class BlogController extends Controller {
 	public void index() {
-		setAttr("blogPage", Blog.me.paginate(getParaToInt(0, 1), 10));
-		//render("blog.html");
+		setAttr("blogPage", Blog.me.paginate(getParaToInt(0, 1), 20));
+		render("blog.jsp");
 	}
 	
 	public void add() {
