@@ -14,9 +14,14 @@ pageContext.setAttribute("basePath",basePath);
 <script type="text/javascript" src="${basePath }lib/jquery.validation/1.14.0/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${basePath }lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="${basePath }lib/jquery.validation/1.14.0/messages_zh.min.js"></script>
-<script type="text/javascript" src="${basePath }lib/jquery.form.min.js"></script>
+
 <script type="text/javascript" src="${basePath }static/h-ui/js/H-ui.js"></script>
 <script type="text/javascript" src="${basePath }static/h-ui/js/H-ui.admin.js"></script>  
 
 <script type="text/javascript" src="${basePath }lib/My97DatePicker/WdatePicker.js"></script> 
-<script type="text/javascript" src="${basePath }lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="${basePath }lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+
+
+<%--
+<script type="text/javascript" src="${basePath }lib/jquery.form.min.js"></script>
+ --%> 

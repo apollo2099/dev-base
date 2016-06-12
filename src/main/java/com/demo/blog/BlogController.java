@@ -1,5 +1,5 @@
 package com.demo.blog;
-
+import com.alibaba.fastjson.JSONObject;
 import com.demo.common.model.Blog;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -12,6 +12,7 @@ import com.jfinal.core.Controller;
 public class BlogController extends Controller {
 	public void index() {
 		setAttr("blogPage", Blog.me.paginate(getParaToInt(0, 1), 20));
+	//	JSONObject.toJSON(javaObject)
 		render("blog.jsp");
 	}
 	
