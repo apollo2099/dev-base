@@ -3,6 +3,8 @@ package com.demo.common.config;
 import com.demo.blog.BlogController;
 import com.demo.common.model._MappingKit;
 import com.demo.index.IndexController;
+import com.jfinal.base.module.sys.menu.contraller.SysMenuController;
+import com.jfinal.base.module.sys.role.contraller.SysRoleController;
 import com.jfinal.base.module.sys.user.contraller.SysUserController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -35,10 +37,11 @@ public class DemoConfig extends JFinalConfig {
 	 * 配置路由
 	 */
 	public void configRoute(Routes me) {
-		//me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
 		me.add("/", IndexController.class);	// 第三个参数为该Controller的视图存放路径
-		me.add("/blog", BlogController.class);			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
-		me.add("/sysuser", SysUserController.class);
+		me.add("/blog", BlogController.class);			
+		me.add("/sys/sysuser", SysUserController.class,"/sys/sysuser");
+		me.add("/sys/sysmenu", SysMenuController.class,"/sys/sysmenu");
+		me.add("/sys/sysrole", SysRoleController.class,"/sys/sysrole");
 		//me.add(controllerKey, controllerClass, viewPath)
 	}
 	

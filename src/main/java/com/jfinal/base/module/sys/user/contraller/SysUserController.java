@@ -12,7 +12,7 @@ public class SysUserController extends Controller {
 		setAttr("userList", userPage.getList());
 		setAttr("userPage", userPage);
 		setAttr("test", "test");
-		render("/sysuser/sysuser.jsp");
+		render("/sys/sysuser/sysuser.jsp");
 	}
 	
 	public void login(){

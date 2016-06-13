@@ -21,7 +21,7 @@ public class BlogController extends Controller {
 		if (pageNum == null || pageNum == 0) {
 			pageNum = 1;
 		}
-		Page<Blog> blogPage = Blog.me.paginate(pageNum, 20);
+		Page<Blog> blogPage = Blog.me.paginate(pageNum, 10);
 		setAttr("blogPage", blogPage);
 		render("blog.jsp");
 	}
