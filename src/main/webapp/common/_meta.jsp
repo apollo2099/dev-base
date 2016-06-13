@@ -28,6 +28,8 @@ pageContext.setAttribute("basePath",basePath);
 <link rel="stylesheet" type="text/css" href="${basePath }lib/icheck/icheck.css" />
 <link rel="stylesheet" type="text/css" href="${basePath }static/h-ui/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="${basePath }static/h-ui/css/style.css" />
+
+
 <!--[if IE 6]>
 <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>

@@ -18,13 +18,13 @@
 	<div class="row cl">
 		<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>标题：</label>
 		<div class="formControls col-xs-10 col-sm-10">
-			<input type="text" class="input-text" name="blog.title" value="${blog.title}" />${titleMsg}
+			<input type="text" class="input-text" name="blog.title" value="${blog.title}" id="blogTitle"/>${titleMsg}
 		</div>
 	</div>
 	<div class="row cl">
 		<label class="form-label col-xs-2 col-sm-2">内容：</label>
 		<div class="formControls col-xs-10 col-sm-10">
-			<textarea name="blog.content" cols="80" rows="10" class="textarea">${blog.content}</textarea>${contentMsg}
+			<textarea name="blog.content" cols="80" rows="10" class="textarea" id="blogContent">${blog.content}</textarea>${contentMsg}
 			<p class="textarea-numberbar"><em class="textarea-length">0</em>/1000</p>
 		</div>
 	</div>
@@ -51,31 +51,14 @@ $(function(){
 	
 	$("#form-admin-add").validate({
 		rules:{
-			adminName:{
+			blogTitle:{
 				required:true,
 				minlength:4,
-				maxlength:16
+				maxlength:64
 			},
-			password:{
+			blogContent:{
 				required:true,
-			},
-			password2:{
-				required:true,
-				equalTo: "#password"
-			},
-			sex:{
-				required:true,
-			},
-			phone:{
-				required:true,
-				isPhone:true,
-			},
-			email:{
-				required:true,
-				email:true,
-			},
-			adminRole:{
-				required:true,
+				minlength:20
 			},
 		},
 		onkeyup:false,
@@ -85,7 +68,9 @@ $(function(){
 			/*$(form).submit();*/
 			$(form).ajaxSubmit();
 			var index = parent.layer.getFrameIndex(window.name);
+			alert(index)
 			parent.$('.btn-refresh').click();
+			parent.location.reload(); 
 			parent.layer.close(index);
 		}
 	});

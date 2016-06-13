@@ -47,10 +47,21 @@
 			</tbody>
 		</table>
 	</div>
+	<div>
+	        <c:set var="pageNumber" scope="request" value="${blogPage.getPageNumber()}" />
+            <c:set var="pageSize" scope="request" value="${blogPage.getPageSize()}" />
+            <c:set var="totalPage" scope="request" value="${blogPage.getTotalPage()}" />
+            <c:set var="totalRow" scope="request" value="${blogPage.getTotalRow()}" />
+            <c:set var="pageUrl" scope="request" value="/blog?pageNum=" />
+            <jsp:include page="/common/page.jsp"/>
+	</div>
 </div>
+
+
 <!--  -->
 <jsp:include page="/common/_footer.jsp"></jsp:include>
 <script type="text/javascript">
+/*
 $('.table-sort').dataTable({
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
@@ -93,6 +104,14 @@ $('.table-sort').dataTable({
 	  {"orderable":false,"aTargets":[0,2]}// 制定列不参与排序
 	]
 });
+*/
+
+
+/*
+oTable = $('#default_table').initDT({
+"sAjaxSource": "/blog/query"
+});
+*/
 /*管理员-增加*/
 function admin_add(title,url,w,h){
 	layer_show(title,url,w,h);
