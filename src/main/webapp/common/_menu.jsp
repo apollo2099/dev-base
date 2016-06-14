@@ -9,7 +9,7 @@
 					<li><a _href="/sys/sysmenu" data-title="系统设置" href="javascript:void(0)">菜单管理</a></li>
 					<li><a _href="/sys/sysrole" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
 					<li><a _href="/sys/sysuser" data-title="用户管理" href="javascript:void(0)">用户管理</a></li>
-					<li><a _href="system-log.html" data-title="系统日志" href="javascript:void(0)">系统日志</a></li>
+					<li><a _href="/sys/syslog" data-title="系统日志" href="javascript:void(0)">系统日志</a></li>
 				</ul>
 			</dd>
 		</dl>

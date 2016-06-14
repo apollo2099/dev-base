@@ -1,8 +1,8 @@
 package com.demo.common.config;
 
 import com.demo.blog.BlogController;
-import com.demo.common.model._MappingKit;
 import com.demo.index.IndexController;
+import com.jfinal.base.common.model._MappingKit;
 import com.jfinal.base.module.sys.menu.contraller.SysMenuController;
 import com.jfinal.base.module.sys.role.contraller.SysRoleController;
 import com.jfinal.base.module.sys.user.contraller.SysUserController;

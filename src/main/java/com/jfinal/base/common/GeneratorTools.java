@@ -12,7 +12,7 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 /**
  * GeneratorDemo
  */
-public class GeneratorDemo {
+public class GeneratorTools {
 	
 	public static DataSource getDataSource() {
 		Prop p = PropKit.use("a_little_config.txt");
@@ -23,12 +23,12 @@ public class GeneratorDemo {
 	
 	public static void main(String[] args) {
 		// base model 所使用的包名
-		String baseModelPackageName = "com.demo.common.model.base";
+		String baseModelPackageName = "com.jfinal.base.common.model.base";
 		// base model 文件保存路径F:\gitHome\jfinal-base\src\main\java
-		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/demo/common/model/base";
+		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/jfinal/base/common/model/base";
 		
 		// model 所使用的包名 (MappingKit 默认使用的包名)
-		String modelPackageName = "com.demo.common.model";
+		String modelPackageName = "com.jfinal.base.common.model";
 		// model 文件保存路径 (MappingKit 与 DataDictionary 文件默认保存路径)
 		String modelOutputDir = baseModelOutputDir + "/..";
 		
