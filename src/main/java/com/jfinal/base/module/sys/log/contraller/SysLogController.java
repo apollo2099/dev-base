@@ -33,23 +33,7 @@ public class SysLogController extends Controller{
 	 * 
 	 * @author huixiong
 	 */
-	public void query(){
-		String sSearch = "";// 搜索的关键字
-		int count = 0 ;  //查询出来的数量
-//		JSONArray ja = (JSONArray) JSONArray.parse(aoData);
-//		//分别为关键的参数赋值
-//		for (int i = 0; i < ja.size(); i++) {
-//			JSONObject obj = (JSONObject) ja.get(i);
-//			if (obj.get("name").equals("sEcho"))
-//				sEcho = obj.get("value").toString();
-//			if (obj.get("name").equals("iDisplayStart"))
-//				iDisplayStart = obj.get("value").toString();
-//			if (obj.get("name").equals("iDisplayLength"))
-//				iDisplayLength = obj.get("value").toString();
-//			if (obj.get("name").equals("sSearch"))
-//				sSearch = obj.get("value").toString();
-//		}
-		
+	public void query(){		
 		System.out.println(getParaMap());
 		
 		int sEcho =getParaToInt("sEcho");
@@ -73,7 +57,8 @@ public class SysLogController extends Controller{
 	}
 	
 	public void delete(){
-		
+		String idValue =getPara("id");
+		SysLog.dao.deleteById(idValue);
 	}
 }
   

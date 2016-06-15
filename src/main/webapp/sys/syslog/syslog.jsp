@@ -32,21 +32,6 @@
       </tr>
     </thead>
     <tbody>
-    
-    <%--
-    <c:forEach items="${logPage.getList() }" var="log">
-      <tr class="text-c">
-        <td><input type="checkbox" value="" name=""></td>
-        <td>${log.id }</td>
-        <td>${log.type }</td>
-        <td>${log.title }</td>
-        <td>${log.createBy }</td>
-        <td>${log.remoteAddr }</td>
-        <td>${log.createDate }</td>
-        <td><a title="详情" href="javascript:;" onclick="system_log_show(this,'10001')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a> <a title="删除" href="javascript:;" onclick="system_log_del(this,'10001')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
-      </tr>
-    </c:forEach>
-     --%>
     </tbody>
   </table>
   <div id="pageNav" class="pageNav"></div>
@@ -55,23 +40,6 @@
 <jsp:include page="/common/_footer.jsp"></jsp:include>
 
 <script type="text/javascript">
-
-/**
-$('.table-sort').dataTable({
-	"lengthMenu":false,//显示数量选择 
-	"bFilter": false,//过滤功能
-	"bPaginate": false,//翻页信息
-	"bInfo": false,//数量信息
-	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-	"bStateSave": true,//状态保存
-	"aoColumnDefs": [
-	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[0,7]}// 制定列不参与排序
-	]
-});
-*/
-
-
 var oTable = $('.table-sort').dataTable(
         {
             "sPaginationType": "full_numbers", //分页风格，full_number会把所有页码显示出来（大概是，自己尝试）
@@ -114,23 +82,14 @@ var oTable = $('.table-sort').dataTable(
                            {"mData": 'method'},
                          ],
             "aoColumnDefs": [//和aoColums类似，但他可以给指定列附近爱属性
+                {sDefaultContent: '',aTargets: [ '_all' ]},
                 {"bSortable": false, "aTargets": [1, 3, 6, 7,8]},  //这句话意思是第1,3,6,7,8,9列（从0开始算） 不能排序
                 {"bSearchable": false, "aTargets": [1, 2, 3, 4, 5, 6, 7]}, //bSearchable 这个属性表示是否可以全局搜索，其实在服务器端分页中是没用的
             ],
             "aaSorting": [[2, "desc"]], //默认排序
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {// 当创建了行，但还未绘制到屏幕上的时候调用，通常用于改变行的class风格
-            	/**
-                if (aData.status == 1) {
-                    $('td:eq(8)', nRow).html("<span class='text-error'>审核中</span>");
-                } else if (aData.status == 4) {
-                    $('td:eq(8)', nRow).html("<span class='text-error'>审核失败</span>");
-                } else if (aData.active == 0) {
-                    $('td:eq(8)', nRow).html("<span>隐藏</span>");
-                } else {
-                    $('td:eq(8)', nRow).html("<span class='text-success'>显示</span>");
-                }
-                */
-                $('td:eq(8)', nRow).html("<a href='/sys/syslog/view?id=" + aData.id + "' class='ace_detail'>详情</a>");
+                $('td:eq(8)', nRow).html("<a title='详情' href='javascript:;' onclick=\"system_log_show('张三','/sys/syslog/view','10001','360','400')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe665;</i></a>"+ 
+                                         "<a title='删除' href='javascript:;' onclick='system_log_del(this,10001)' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
                 return nRow;
             },
             "fnInitComplete": function(oSettings, json) { //表格初始化完成后调用 在这里和服务器分页没关系可以忽略
@@ -139,6 +98,21 @@ var oTable = $('.table-sort').dataTable(
 
         }
 );
+
+
+/*日志-删除*/
+function system_log_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		//此处请求后台程序，下方是成功后的前台处理……
+		
+		$(obj).parents("tr").remove();
+		layer.msg('已删除!',{icon:1,time:1000});
+	});
+}
+/*日志-查看*/
+function system_log_show(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
 </script>
 </body>
 </html>
