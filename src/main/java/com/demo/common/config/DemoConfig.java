@@ -1,8 +1,11 @@
 package com.demo.common.config;
 
 import com.demo.blog.BlogController;
-import com.demo.common.model._MappingKit;
 import com.demo.index.IndexController;
+import com.jfinal.base.common.model._MappingKit;
+import com.jfinal.base.module.sys.menu.contraller.SysMenuController;
+import com.jfinal.base.module.sys.role.contraller.SysRoleController;
+import com.jfinal.base.module.sys.user.contraller.SysUserController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -13,6 +16,7 @@ import com.jfinal.core.JFinal;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.render.ViewType;
 
 /**
  * API引导式配置
@@ -26,14 +30,19 @@ public class DemoConfig extends JFinalConfig {
 		// 加载少量必要配置，随后可用PropKit.get(...)获取值
 		PropKit.use("a_little_config.txt");
 		me.setDevMode(PropKit.getBoolean("devMode", false));
+		me.setViewType(ViewType.JSP);
 	}
 	
 	/**
 	 * 配置路由
 	 */
 	public void configRoute(Routes me) {
-		me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
-		me.add("/blog", BlogController.class);			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
+		me.add("/", IndexController.class);	// 第三个参数为该Controller的视图存放路径
+		me.add("/blog", BlogController.class);			
+		me.add("/sys/sysuser", SysUserController.class,"/sys/sysuser");
+		me.add("/sys/sysmenu", SysMenuController.class,"/sys/sysmenu");
+		me.add("/sys/sysrole", SysRoleController.class,"/sys/sysrole");
+		//me.add(controllerKey, controllerClass, viewPath)
 	}
 	
 	public static C3p0Plugin createC3p0Plugin() {
@@ -76,6 +85,6 @@ public class DemoConfig extends JFinalConfig {
 	 */
 	public static void main(String[] args) {
 //		JFinal.start("WebRoot", 80, "/", 5);//传统项目集成方式启动
-		JFinal.start("src/main/webapp", 80, "/", 5);//maven集成方式启动
+		JFinal.start("src/main/webapp", 8080, "/", 5);//maven集成方式启动
 	}
 }

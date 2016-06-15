@@ -1,6 +1,7 @@
 package com.demo.common.model;
 
 import com.demo.common.model.base.BaseBlog;
+import com.jfinal.base.common.page.DbModel;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -9,7 +10,8 @@ import com.jfinal.plugin.activerecord.Page;
  * 数据库字段名建议使用驼峰命名规则，便于与 java 代码保持一致，如字段名： userId
  */
 @SuppressWarnings("serial")
-public class Blog extends BaseBlog<Blog> {
+//public class Blog extends BaseBlog<Blog> {
+	public class Blog extends DbModel<Blog> {
 	
 	public static final Blog me = new Blog();
 	

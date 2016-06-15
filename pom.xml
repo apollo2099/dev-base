@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com</groupId>
-  <artifactId>dev-base</artifactId>
+  <artifactId>jfinal-base</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>dev-base</name>
+  <name>jfinal-base</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -61,6 +61,21 @@
 		<artifactId>tomcat-util</artifactId>
 		<version>8.0.15</version>
 		<scope>runtime</scope>
+	</dependency>
+	<!-- jsp -->
+	<dependency>
+		<groupId>org.eclipse.jetty</groupId>
+		<artifactId>jetty-jsp</artifactId>
+		<version>8.1.8.v20121106</version>
+		<scope>provided</scope>
+	</dependency>
+	<!-- jsp -->     
+	
+	<!-- http://mvnrepository.com/artifact/com.alibaba/fastjson -->
+	<dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>fastjson</artifactId>
+		<version>1.2.7</version>
 	</dependency>
 	
   </dependencies>
