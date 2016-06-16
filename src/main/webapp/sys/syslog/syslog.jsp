@@ -16,7 +16,7 @@
     <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="logmax" class="input-text Wdate" style="width:120px;">
     <input type="text" name="" id="" placeholder="日志名称" style="width:250px" class="input-text"><button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜日志</button>
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span> <span class="r">共有数据：<strong>${logPage.getTotalRow()}</strong> 条</span> </div>
+  <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
   <table class="table table-border table-bordered table-bg table-hover table-sort">
     <thead>
       <tr class="text-c">
@@ -89,7 +89,7 @@ var defTable = $('.table-sort').dataTable(
             "aaSorting": [[2, "desc"]], //默认排序
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {// 当创建了行，但还未绘制到屏幕上的时候调用，通常用于改变行的class风格
                 $('td:eq(8)', nRow).html("<a title='详情' href='javascript:;' onclick=\"system_log_show('日志详情','/sys/syslog/view?id="+aData.id+"','"+aData.id+"','650','600')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe665;</i></a>"+ 
-                                         "<a title='删除' href='javascript:;' onclick='system_log_del(this,\'"+aData.id+"\')' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
+                                                          "<a title='删除' href='javascript:;' onclick=\"system_log_del(this,'"+aData.id+"')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
                 return nRow;
             },
             "fnInitComplete": function(oSettings, json) { //表格初始化完成后调用 在这里和服务器分页没关系可以忽略
@@ -110,7 +110,6 @@ function refreshTable(toFirst) {
 
 /*日志-删除*/
 function system_log_del(obj,id){
-	alert(id);
 	layer.confirm('确认要删除吗？',function(index){
 	    //此处请求后台程序，下方是成功后的前台处理……	
 		 $.ajax({   
@@ -124,6 +123,9 @@ function system_log_del(obj,id){
 		     success:function(data){   
 				$(obj).parents("tr").remove();
 				layer.msg('已删除!',{icon:1,time:1000});
+				
+				///refreshTable();
+				defTable.ajax.reload();
 		     }
 	      });
 	});
