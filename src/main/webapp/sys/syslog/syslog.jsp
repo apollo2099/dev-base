@@ -40,7 +40,7 @@
 <jsp:include page="/common/_footer.jsp"></jsp:include>
 
 <script type="text/javascript">
-var oTable = $('.table-sort').dataTable(
+var defTable = $('.table-sort').dataTable(
         {
             "sPaginationType": "full_numbers", //分页风格，full_number会把所有页码显示出来（大概是，自己尝试）
             "sDom": "<'row-fluid inboxHeader'<'span6'<'dt_actions'>l><'span6'f>r>t<'row-fluid inboxFooter'<'span6'i><'span6'p>>", //待补充
@@ -88,8 +88,8 @@ var oTable = $('.table-sort').dataTable(
             ],
             "aaSorting": [[2, "desc"]], //默认排序
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {// 当创建了行，但还未绘制到屏幕上的时候调用，通常用于改变行的class风格
-                $('td:eq(8)', nRow).html("<a title='详情' href='javascript:;' onclick=\"system_log_show('张三','/sys/syslog/view','10001','360','400')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe665;</i></a>"+ 
-                                         "<a title='删除' href='javascript:;' onclick='system_log_del(this,10001)' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
+                $('td:eq(8)', nRow).html("<a title='详情' href='javascript:;' onclick=\"system_log_show('日志详情','/sys/syslog/view?id="+aData.id+"','"+aData.id+"','650','600')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe665;</i></a>"+ 
+                                         "<a title='删除' href='javascript:;' onclick='system_log_del(this,\'"+aData.id+"\')' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
                 return nRow;
             },
             "fnInitComplete": function(oSettings, json) { //表格初始化完成后调用 在这里和服务器分页没关系可以忽略
@@ -99,14 +99,33 @@ var oTable = $('.table-sort').dataTable(
         }
 );
 
+function refreshTable(toFirst) {
+	//defaultTable.ajax.reload();
+	if(toFirst){//表格重绘，并跳转到第一页
+		defTable.draw();
+	}else{//表格重绘，保持在当前页
+		defTable.draw(false);
+	}
+}
 
 /*日志-删除*/
 function system_log_del(obj,id){
+	alert(id);
 	layer.confirm('确认要删除吗？',function(index){
-		//此处请求后台程序，下方是成功后的前台处理……
-		
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',{icon:1,time:1000});
+	    //此处请求后台程序，下方是成功后的前台处理……	
+		 $.ajax({   
+		     url:'/sys/syslog/delete',   
+		     type:'post',   
+		     data:'id='+id,   
+		     async : true, //默认为true 异步   
+		     error:function(){   
+		        alert('error');   
+		     },   
+		     success:function(data){   
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+		     }
+	      });
 	});
 }
 /*日志-查看*/

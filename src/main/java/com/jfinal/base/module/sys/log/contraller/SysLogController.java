@@ -30,7 +30,7 @@ public class SysLogController extends Controller{
 		render("/sys/syslog/syslog.jsp");
 	}
 	/**
-	 * 
+	 * 异步服务器分页查询
 	 * @author huixiong
 	 */
 	public void query(){		
@@ -52,13 +52,28 @@ public class SysLogController extends Controller{
 		renderJson(dataMap);
 	}
 
+	/**
+	 * 查看日志详情
+	 * @author huixiong
+	 */
 	public void view(){
-		
+		String id = getPara("id");
+		SysLog sysLog = SysLog.dao.findById(id);
+		setAttr("sysLog", sysLog);
+		render("/sys/syslog/syslog_view.jsp");
 	}
 	
+	/**
+	 * 异步删除日志
+	 * @author huixiong
+	 */
 	public void delete(){
 		String idValue =getPara("id");
-		SysLog.dao.deleteById(idValue);
+		Boolean isFlag =SysLog.dao.deleteById(idValue);
+		
+		Map<String, Object> dataMap =new HashMap<String, Object>();
+		dataMap.put("isFlag", isFlag);
+		renderJson(dataMap);
 	}
 }
   
