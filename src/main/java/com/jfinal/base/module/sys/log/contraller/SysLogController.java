@@ -8,6 +8,7 @@
   
 package com.jfinal.base.module.sys.log.contraller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +26,6 @@ import com.jfinal.plugin.activerecord.Page;
   */
 public class SysLogController extends Controller{
 	public void index() {
-		Page<SysLog> logPage=	SysLog.dao.paginate(getParaToInt(0, 1), 10);
-		setAttr("logPage", logPage);
 		render("/sys/syslog/syslog.jsp");
 	}
 	/**
@@ -40,7 +39,23 @@ public class SysLogController extends Controller{
 	    int start = getParaToInt("iDisplayStart");   // 起始
 	    int length = getParaToInt("iDisplayLength"); // 分页大小size 
 	    int pageNum =start/length+1;//页码
-		Page<SysLog> logPage=SysLog.dao.paginate(pageNum, length);
+	    
+	    // 请求参数
+	    String startTime =getPara("startTime");
+	    String endTime =getPara("endTime");
+	    String logContext = getPara("logContext");
+	    Map<String,Object> param = new HashMap<String, Object>();
+	    if(ObjectUtils.isNotEmpty(startTime)){
+	    	param.put("startTime", startTime);
+	    }
+	    if(ObjectUtils.isNotEmpty(endTime)){
+	    	param.put("endTime", endTime);
+	    }
+        if(ObjectUtils.isNotEmpty(logContext)){
+        	param.put("logContext", logContext);
+	    }
+		Page<SysLog> logPage=SysLog.dao.paginate(pageNum, length, param);
+
 		setAttr("logPage", logPage);
 		
 		Map<String, Object> dataMap =new HashMap<String, Object>();
