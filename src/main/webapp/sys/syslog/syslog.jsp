@@ -10,15 +10,13 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 系统日志 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-  <form action="/sys/syslog/query" method="post">
   <div class="text-c"> 日期范围：
-    <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="logmin" name="startTime" class="input-text Wdate" style="width:120px;"/>
+    <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="startTime" name="startTime" class="input-text Wdate" style="width:120px;"/>
     -
-    <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="logmax" name="endTime" class="input-text Wdate" style="width:120px;"/>
+    <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="endTime" name="endTime" class="input-text Wdate" style="width:120px;"/>
     <input type="text" name="logContext" id="logContext" placeholder="日志名称" style="width:250px" class="input-text"/>
-    <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜日志</button>
+    <button name="" id="" class="btn btn-success" type="submit"  onclick ="javascript:queryTable()"><i class="Hui-iconfont">&#xe665;</i> 搜日志</button>
   </div>
-  </form>
   <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
   <table class="table table-border table-bordered table-bg table-hover table-sort">
     <thead>
@@ -95,6 +93,13 @@ var defTable = $('.table-sort').dataTable(
                                                           "<a title='删除' href='javascript:;' onclick=\"system_log_del(this,'"+aData.id+"')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
                 return nRow;
             },
+            "fnServerParams": function(aoData) {
+                aoData.push({"name": "logContext","value": $("#logContext").val()});
+                aoData.push({"name": "startTime","value": $("#startTime").val()});
+                aoData.push({"name": "endTime","value": $("#endTime").val()});
+                var searchPara = //你要传递的参数
+                aoData.push({"name": "searchPara","value": searchPara});
+            },
             "fnInitComplete": function(oSettings, json) { //表格初始化完成后调用 在这里和服务器分页没关系可以忽略
                 $("input[aria-controls='DataTables_Table_0']").attr("placeHolder", "请输入高手用户名");
             }
@@ -102,12 +107,17 @@ var defTable = $('.table-sort').dataTable(
         }
 );
 
+
+function queryTable(){
+	defTable.fnDraw();
+}
+
 function refreshTable(toFirst) {
 	//defaultTable.ajax.reload();
 	if(toFirst){//表格重绘，并跳转到第一页
-		defTable.draw();
+		defTable.fnDraw();
 	}else{//表格重绘，保持在当前页
-		defTable.draw(false);
+		defTable.fnDraw(false);
 	}
 }
 
@@ -127,8 +137,8 @@ function system_log_del(obj,id){
 				$(obj).parents("tr").remove();
 				layer.msg('已删除!',{icon:1,time:1000});
 				
-				///refreshTable();
-				defTable.ajax.reload();
+				refreshTable();
+				//defTable.ajax.reload();
 		     }
 	      });
 	});

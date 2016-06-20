@@ -32,9 +32,7 @@ public class SysLogController extends Controller{
 	 * 异步服务器分页查询
 	 * @author huixiong
 	 */
-	public void query(){		
-		System.out.println(getParaMap());
-		
+	public void query(){				
 		int sEcho =getParaToInt("sEcho");
 	    int start = getParaToInt("iDisplayStart");   // 起始
 	    int length = getParaToInt("iDisplayLength"); // 分页大小size 
@@ -46,10 +44,10 @@ public class SysLogController extends Controller{
 	    String logContext = getPara("logContext");
 	    Map<String,Object> param = new HashMap<String, Object>();
 	    if(ObjectUtils.isNotEmpty(startTime)){
-	    	param.put("startTime", startTime);
+	    	param.put("startTime", startTime+" 00:00:00");
 	    }
 	    if(ObjectUtils.isNotEmpty(endTime)){
-	    	param.put("endTime", endTime);
+	    	param.put("endTime", endTime+" 23:59:59");
 	    }
         if(ObjectUtils.isNotEmpty(logContext)){
         	param.put("logContext", logContext);

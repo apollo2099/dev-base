@@ -16,11 +16,11 @@ public class SysLog extends BaseSysLog<SysLog> {
 		StringBuffer sqlWhere = new StringBuffer("from sys_log where 1=1 ");
 	    if(ObjectUtils.isNotEmpty(param.get("startTime"))){
 	    	String startTime = (String) param.get("startTime");
-	    	sqlWhere.append(" and create_time>='"+startTime+"'");
+	    	sqlWhere.append(" and create_date>='"+startTime+"'");
 	    }
 	    if(ObjectUtils.isNotEmpty(param.get("endTime"))){
 	    	String endTime = (String) param.get("endTime");
-	    	sqlWhere.append(" and create_time<='"+endTime+"'");
+	    	sqlWhere.append(" and create_date<='"+endTime+"'");
 	    }
         if(ObjectUtils.isNotEmpty(param.get("logContext"))){
         	String logContext = (String) param.get("logContext");
