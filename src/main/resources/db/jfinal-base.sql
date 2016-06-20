@@ -129,7 +129,22 @@ CREATE TABLE `sys_user_role` (
 
 /*Data for the table `sys_user_role` */
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+CREATE TABLE `sys_log` (
+  `id` varchar(64) NOT NULL COMMENT '编号',
+  `type` char(1) DEFAULT '1' COMMENT '日志类型',
+  `title` varchar(255) DEFAULT '' COMMENT '日志标题',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `remote_addr` varchar(255) DEFAULT NULL COMMENT '操作IP地址',
+  `user_agent` varchar(255) DEFAULT NULL COMMENT '用户代理',
+  `request_uri` varchar(255) DEFAULT NULL COMMENT '请求URI',
+  `method` varchar(5) DEFAULT NULL COMMENT '操作方式',
+  `params` text COMMENT '操作提交的数据',
+  `exception` text COMMENT '异常信息',
+  PRIMARY KEY (`id`),
+  KEY `sys_log_create_by` (`create_by`),
+  KEY `sys_log_request_uri` (`request_uri`),
+  KEY `sys_log_type` (`type`),
+  KEY `sys_log_create_date` (`create_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='日志表';
