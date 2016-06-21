@@ -1,6 +1,5 @@
 package com.jfinal.base.module.sys.user.contraller;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class SysUserController extends Controller {
 	    // 请求参数
 	    String startTime =getPara("startTime");
 	    String endTime =getPara("endTime");
-	    String logContext = getPara("logContext");
+	    String loginName = getPara("loginName");
 	    Map<String,Object> param = new HashMap<String, Object>();
 	    if(ObjectUtils.isNotEmpty(startTime)){
 	    	param.put("startTime", startTime);
@@ -33,8 +32,8 @@ public class SysUserController extends Controller {
 	    if(ObjectUtils.isNotEmpty(endTime)){
 	    	param.put("endTime", endTime);
 	    }
-        if(ObjectUtils.isNotEmpty(logContext)){
-        	param.put("logContext", logContext);
+        if(ObjectUtils.isNotEmpty(loginName)){
+        	param.put("loginName", loginName);
 	    }
 		Page<SysUser> userPage=	SysUser.dao.paginate(pageNum, length, param);
 		
@@ -59,4 +58,45 @@ public class SysUserController extends Controller {
         	//error("登录失败");
         }
 	}
+	
+	
+	public void add(){
+		render("/sys/sysuser/sysuser_add.jsp");
+	}
+	
+	public void saveUser(){
+		super.getModel(SysUser.class).save();
+		System.out.println("test");
+		//renderJson();
+		render("/sys/sysuser/sysuser.jsp");
+	}
+	
+	public void edit(){
+		String userId = getPara("userId");
+		SysUser sysUser = SysUser.dao.findById(userId);
+		setAttr("sysUser", sysUser);
+		render("/sys/sysuser/sysuser_edit.jsp");
+	}
+	
+	public void updateUser(){
+		super.getModel(SysUser.class).update();
+	}
+	
+	public void updateStatus(){
+        String userId = getPara("userId");
+        String status = getPara("status");
+		SysUser.dao.updateStatus(userId, status);
+		renderJson();
+	}
+	
+	public void delete(){
+		Integer idValue =getParaToInt("userId");
+		Boolean isFlag =SysUser.dao.deleteById(idValue);
+		
+		Map<String, Object> dataMap =new HashMap<String, Object>();
+		dataMap.put("isFlag", isFlag);
+		renderJson(dataMap);
+	}
+	
+	
 }

@@ -26,9 +26,9 @@ public class SysUser extends BaseSysUser<SysUser> {
 	    	String endTime = (String) param.get("endTime");
 	    	sqlWhere.append(" and create_date<='"+endTime+"'");
 	    }
-        if(ObjectUtils.isNotEmpty(param.get("logContext"))){
-        	String logContext = (String) param.get("logContext");
-	    	sqlWhere.append(" and title like '%"+logContext+"%'");
+        if(ObjectUtils.isNotEmpty(param.get("loginName"))){
+        	String loginName = (String) param.get("loginName");
+	    	sqlWhere.append(" and login_name like '%"+loginName+"%'");
 	    }
         sqlWhere.append(" order by user_id desc ");
 		return paginate(pageNumber, pageSize, "select * ", sqlWhere.toString());
@@ -42,12 +42,27 @@ public class SysUser extends BaseSysUser<SysUser> {
 	 */
 	public Boolean userLogin(String username, String password) {
 		Boolean isFlag = false;
-		if (ObjectUtils.isNotEmpty(username)
-				&& ObjectUtils.isNotEmpty(password)) {
+		if (ObjectUtils.isNotEmpty(username)&& ObjectUtils.isNotEmpty(password)) {
 			SysUser sysUser = super.findFirst("select * from sys_user where login_name=? and password =?",username, password);
 			if (sysUser != null) {
 				isFlag = true;
 			}
+		}
+		return isFlag;
+	}
+	
+	/**
+	 * 更新用户状态
+	 * @param userId 用户编码
+	 * @param status 用户状态
+	 * @return
+	 */
+	public Boolean updateStatus(String userId,String status){
+		Boolean isFlag = false;
+		if (ObjectUtils.isNotEmpty(userId)&& ObjectUtils.isNotEmpty(status)) {
+			SysUser sysUser = super.findById(userId);
+			sysUser.setStatus(status);
+			sysUser.update();
 		}
 		return isFlag;
 	}

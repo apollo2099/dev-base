@@ -10,13 +10,13 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text"> 日期范围：
-		<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:120px;">
+		<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="startTime" name="startTime" class="input-text Wdate" style="width:120px;">
 		-
-		<input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
-		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+		<input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="endTime" name="endTime" class="input-text Wdate" style="width:120px;">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="loginName" name="loginName">
+		<button type="submit" class="btn btn-success" onclick="javascript:refreshTable()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','admin-add.html','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> <span class="r">共有数据：<strong>${userPage.getTotalRow()}</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','/sys/sysuser/add','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> </div>
 	<table class="table table-border table-bordered table-bg table-sort">
 		<thead>
 			<tr>
@@ -70,24 +70,48 @@ function admin_add(title,url,w,h){
 function admin_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
-		
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',{icon:1,time:1000});
+		 $.ajax({   
+		     url:'/sys/sysuser/delete',   
+		     type:'post',   
+		     data:'userId='+id,   
+		     async : true, //默认为true 异步   
+		     error:function(){   
+		        alert('error');   
+		     },   
+		     success:function(data){   
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+                // 刷新数据表格
+				refreshTable();
+		     }
+	      });
 	});
 }
 /*管理员-编辑*/
 function admin_edit(title,url,id,w,h){
+	url =url+"?userId="+id;
 	layer_show(title,url,w,h);
 }
 /*管理员-停用*/
 function admin_stop(obj,id){
 	layer.confirm('确认要停用吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
-		
-		$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,id)" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
-		$(obj).remove();
-		layer.msg('已停用!',{icon: 5,time:1000});
+	    $.ajax({   
+		     url:'/sys/sysuser/updateStatus',   
+		     type:'post',   
+		     data:'userId='+id+'&status=0',   
+		     async : true, //默认为true 异步   
+		     error:function(){   
+		        alert('error');   
+		     },   
+		     success:function(data){   
+		 		$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,id)" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
+				$(obj).remove();
+				layer.msg('已停用!',{icon: 5,time:1000});
+				
+		     }
+	      });
 	});
 }
 
@@ -95,12 +119,22 @@ function admin_stop(obj,id){
 function admin_start(obj,id){
 	layer.confirm('确认要启用吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
-		
-		
-		$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,id)" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-		$(obj).remove();
-		layer.msg('已启用!', {icon: 6,time:1000});
+		$.ajax({   
+		     url:'/sys/sysuser/updateStatus',   
+		     type:'post',   
+		     data:'userId='+id+'&status=1',   
+		     async : true, //默认为true 异步   
+		     error:function(){   
+		        alert('error');   
+		     },   
+		     success:function(data){   
+		 		$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,id)" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+				$(obj).remove();
+				layer.msg('已启用!', {icon: 6,time:1000});
+				
+		     }
+	      });
 	});
 }
 
@@ -122,7 +156,7 @@ var defTable = $('.table-sort').dataTable(
                 "sInfoFiltered": "(筛选自 _MAX_ 条数据)",
                 "sInfoEmtpy": "没有数据",
                 "sProcessing": "正在加载数据...",
-                "sProcessing": "<img src='{{rootUrl}}global/img/ajaxLoader/loader01.gif' />", //这里是给服务器发请求后到等待时间显示的 加载gif
+                "sProcessing": "<img src='http://localhost:8080/static/h-ui/images/ajax-loader.gif'/>", //这里是给服务器发请求后到等待时间显示的 加载gif
                         "oPaginate":
                         {
                             "sFirst": "首页",
@@ -152,18 +186,26 @@ var defTable = $('.table-sort').dataTable(
             ],
             "aaSorting": [[2, "desc"]], //默认排序
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {// 当创建了行，但还未绘制到屏幕上的时候调用，通常用于改变行的class风格
-            	if(aData.status==1){
+            	var statusHtml;
+                if(aData.status==1){
           		  $('td:eq(6)', nRow).html('<span class="label label-success radius">已启用</span>');
+          		  statusHtml='<a style="text-decoration:none" onClick="admin_stop(this,\''+aData.user_id+'\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
           	    }else{
           		  $('td:eq(6)', nRow).html('<span class="label radius">已停用</span>');
-          	    }                
-                $('td:eq(7)', nRow).html('<a style="text-decoration:none" onClick="admin_stop(this,\''+aData.id+'\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>'+
-                                                          '<a title="编辑" href="javascript:;" onclick="admin_edit(\'管理员编辑\',\'admin-add.html\',\'1\',\'800\',\'500\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>'+ 
-                                                          '<a title="删除" href="javascript:;" onclick="admin_del(this,\'1\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>');
+          		  statusHtml='<a style="text-decoration:none" onClick="admin_start(this,\''+aData.user_id+'\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a>';
+          	    }
+
+                $('td:eq(7)', nRow).html(statusHtml+
+                                         '<a title="编辑" href="javascript:;" onclick="admin_edit(\'管理员编辑\',\'/sys/sysuser/edit\',\''+aData.user_id+'\',\'800\',\'500\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>'+ 
+                                         '<a title="删除" href="javascript:;" onclick="admin_del(this,\''+aData.user_id+'\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>');
+                
+            	$('td:eq(6)').addClass("td-status")
+            	$('td:eq(7)').addClass("td-manage")
+            	
                 return nRow;
             },
             "fnServerParams": function(aoData) {
-                aoData.push({"name": "logContext","value": $("#logContext").val()});
+                aoData.push({"name": "loginName","value": $("#loginName").val()});
                 aoData.push({"name": "startTime","value": $("#startTime").val()});
                 aoData.push({"name": "endTime","value": $("#endTime").val()});
             },

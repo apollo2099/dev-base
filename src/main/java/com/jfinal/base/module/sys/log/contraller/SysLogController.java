@@ -8,10 +8,8 @@
   
 package com.jfinal.base.module.sys.log.contraller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import com.jfinal.base.common.model.SysLog;
 import com.jfinal.base.utils.ObjectUtils;
 import com.jfinal.core.Controller;
