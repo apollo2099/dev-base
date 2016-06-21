@@ -67,8 +67,8 @@ public class SysUserController extends Controller {
 	public void saveUser(){
 		super.getModel(SysUser.class).save();
 		System.out.println("test");
-		//renderJson();
-		render("/sys/sysuser/sysuser.jsp");
+		renderJson();
+		//render("/sys/sysuser/sysuser.jsp");
 	}
 	
 	public void edit(){
@@ -80,6 +80,8 @@ public class SysUserController extends Controller {
 	
 	public void updateUser(){
 		super.getModel(SysUser.class).update();
+		//render("/sys/sysuser/sysuser.jsp");
+		renderJson();
 	}
 	
 	public void updateStatus(){

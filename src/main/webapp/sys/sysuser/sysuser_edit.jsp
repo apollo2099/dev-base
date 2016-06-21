@@ -92,9 +92,8 @@ $(function(){
 			$(form).ajaxSubmit();
 			var index = parent.layer.getFrameIndex(window.name);
 			parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-			parent.location.reload(); 
-			//refreshTable();
+			parent.location.reload();
+			parent.layer.close(index); 
 		}
 	});
 });

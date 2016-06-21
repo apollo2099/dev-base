@@ -1,6 +1,9 @@
 package com.jfinal.base.common.model;
 
+import java.util.Map;
+
 import com.jfinal.base.common.model.base.BaseSysMenu;
+import com.jfinal.base.utils.ObjectUtils;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -9,7 +12,22 @@ import com.jfinal.plugin.activerecord.Page;
 @SuppressWarnings("serial")
 public class SysMenu extends BaseSysMenu<SysMenu> {
 	public static final SysMenu dao = new SysMenu();
-	public Page<SysMenu> paginate(int pageNumber, int pageSize) {
-		return paginate(pageNumber, pageSize, "select *", "from sys_menu order by menu_id asc");
+	public Page<SysMenu> paginate(int pageNumber, int pageSize,Map<String,Object> param) {
+		StringBuffer sqlWhere = new StringBuffer(" from sys_menu where 1=1 ");
+	    if(ObjectUtils.isNotEmpty(param.get("startTime"))){
+	    	String startTime = (String) param.get("startTime");
+	    	sqlWhere.append(" and create_date>='"+startTime+"'");
+	    }
+	    if(ObjectUtils.isNotEmpty(param.get("endTime"))){
+	    	String endTime = (String) param.get("endTime");
+	    	sqlWhere.append(" and create_date<='"+endTime+"'");
+	    }
+        if(ObjectUtils.isNotEmpty(param.get("loginName"))){
+        	String loginName = (String) param.get("loginName");
+	    	sqlWhere.append(" and login_name like '%"+loginName+"%'");
+	    }
+        sqlWhere.append(" order by menu_id desc ");
+		
+		return paginate(pageNumber, pageSize, "select *", sqlWhere.toString());
 	}
 }

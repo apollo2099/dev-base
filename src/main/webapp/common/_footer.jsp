@@ -20,3 +20,6 @@ pageContext.setAttribute("basePath",basePath);
 <script type="text/javascript" src="${basePath }lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${basePath }lib/datatables/bootstrap.datatables.min.js"></script>
 <script type="text/javascript" src="${basePath }lib/jquery.form.js"></script>
+<script type="text/javascript" src="${basePath }lib/base.common.js"></script>
+
+
