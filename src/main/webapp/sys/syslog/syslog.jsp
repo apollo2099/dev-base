@@ -11,9 +11,9 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 系统日志 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
   <div class="text-c"> 日期范围：
-    <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="startTime" name="startTime" class="input-text Wdate" style="width:120px;"/>
+    <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'startTime\')||\'%y-%M-%d\'}'})" id="startTime" name="startTime" value="" class="input-text Wdate" style="width:120px;"/>
     -
-    <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="endTime" name="endTime" class="input-text Wdate" style="width:120px;"/>
+    <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'endTime\')}',maxDate:'%y-%M-%d'})" id="endTime" name="endTime" value="" class="input-text Wdate" style="width:120px;"/>
     <input type="text" name="logContext" id="logContext" placeholder="日志名称" style="width:250px" class="input-text"/>
     <button name="" id="" class="btn btn-success" type="submit"  onclick ="javascript:queryTable()"><i class="Hui-iconfont">&#xe665;</i> 搜日志</button>
   </div>
