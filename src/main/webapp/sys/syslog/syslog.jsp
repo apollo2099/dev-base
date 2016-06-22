@@ -10,13 +10,14 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 系统日志 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-  <div class="text-c"> 日期范围：
-    <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="logmin" class="input-text Wdate" style="width:120px;">
+  <div class="text"> 日期范围：
+    <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'startTime\')||\'%y-%M-%d\'}'})" id="startTime" name="startTime" value="" class="input-text Wdate" style="width:120px;"/>
     -
-    <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="logmax" class="input-text Wdate" style="width:120px;">
-    <input type="text" name="" id="" placeholder="日志名称" style="width:250px" class="input-text"><button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜日志</button>
+    <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'endTime\')}',maxDate:'%y-%M-%d'})" id="endTime" name="endTime" value="" class="input-text Wdate" style="width:120px;"/>
+    <input type="text" name="logContext" id="logContext" placeholder="日志名称" style="width:250px" class="input-text"/>
+    <button name="" id="" class="btn btn-success" type="submit"  onclick ="javascript:queryTable()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span> <span class="r">共有数据：<strong>${logPage.getTotalRow()}</strong> 条</span> </div>
+  <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
   <table class="table table-border table-bordered table-bg table-hover table-sort">
     <thead>
       <tr class="text-c">
@@ -40,7 +41,7 @@
 <jsp:include page="/common/_footer.jsp"></jsp:include>
 
 <script type="text/javascript">
-var oTable = $('.table-sort').dataTable(
+var defTable = $('.table-sort').dataTable(
         {
             "sPaginationType": "full_numbers", //分页风格，full_number会把所有页码显示出来（大概是，自己尝试）
             "sDom": "<'row-fluid inboxHeader'<'span6'<'dt_actions'>l><'span6'f>r>t<'row-fluid inboxFooter'<'span6'i><'span6'p>>", //待补充
@@ -88,9 +89,16 @@ var oTable = $('.table-sort').dataTable(
             ],
             "aaSorting": [[2, "desc"]], //默认排序
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {// 当创建了行，但还未绘制到屏幕上的时候调用，通常用于改变行的class风格
-                $('td:eq(8)', nRow).html("<a title='详情' href='javascript:;' onclick=\"system_log_show('张三','/sys/syslog/view','10001','360','400')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe665;</i></a>"+ 
-                                         "<a title='删除' href='javascript:;' onclick='system_log_del(this,10001)' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
+                $('td:eq(8)', nRow).html("<a title='详情' href='javascript:;' onclick=\"system_log_show('日志详情','/sys/syslog/view?id="+aData.id+"','"+aData.id+"','650','600')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe665;</i></a>"+ 
+                                                          "<a title='删除' href='javascript:;' onclick=\"system_log_del(this,'"+aData.id+"')\" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>");
                 return nRow;
+            },
+            "fnServerParams": function(aoData) {
+                aoData.push({"name": "logContext","value": $("#logContext").val()});
+                aoData.push({"name": "startTime","value": $("#startTime").val()});
+                aoData.push({"name": "endTime","value": $("#endTime").val()});
+                var searchPara = //你要传递的参数
+                aoData.push({"name": "searchPara","value": searchPara});
             },
             "fnInitComplete": function(oSettings, json) { //表格初始化完成后调用 在这里和服务器分页没关系可以忽略
                 $("input[aria-controls='DataTables_Table_0']").attr("placeHolder", "请输入高手用户名");
@@ -100,13 +108,39 @@ var oTable = $('.table-sort').dataTable(
 );
 
 
+function queryTable(){
+	defTable.fnDraw();
+}
+
+function refreshTable(toFirst) {
+	//defaultTable.ajax.reload();
+	if(toFirst){//表格重绘，并跳转到第一页
+		defTable.fnDraw();
+	}else{//表格重绘，保持在当前页
+		defTable.fnDraw(false);
+	}
+}
+
 /*日志-删除*/
 function system_log_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
-		//此处请求后台程序，下方是成功后的前台处理……
-		
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',{icon:1,time:1000});
+	    //此处请求后台程序，下方是成功后的前台处理……	
+		 $.ajax({   
+		     url:'/sys/syslog/delete',   
+		     type:'post',   
+		     data:'id='+id,   
+		     async : true, //默认为true 异步   
+		     error:function(){   
+		        alert('error');   
+		     },   
+		     success:function(data){   
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+				
+				refreshTable();
+				//defTable.ajax.reload();
+		     }
+	      });
 	});
 }
 /*日志-查看*/

@@ -1,5 +1,7 @@
 package com.jfinal.base.common.model;
 
+import java.util.Map;
+
 import com.jfinal.base.common.model.base.BaseSysUser;
 import com.jfinal.base.utils.ObjectUtils;
 import com.jfinal.plugin.activerecord.Page;
@@ -14,8 +16,22 @@ public class SysUser extends BaseSysUser<SysUser> {
 	/**
 	 * 所有 sql 与业务逻辑写在 Model 或 Service 中，不要写在 Controller 中，养成好习惯，有利于大型项目的开发与维护
 	 */
-	public Page<SysUser> paginate(int pageNumber, int pageSize) {
-		return paginate(pageNumber, pageSize, "select *", "from sys_user order by user_id asc");
+	public Page<SysUser> paginate(int pageNumber, int pageSize,Map<String,Object> param) {
+		StringBuffer sqlWhere = new StringBuffer(" from sys_user where 1=1 ");
+	    if(ObjectUtils.isNotEmpty(param.get("startTime"))){
+	    	String startTime = (String) param.get("startTime");
+	    	sqlWhere.append(" and create_date>='"+startTime+"'");
+	    }
+	    if(ObjectUtils.isNotEmpty(param.get("endTime"))){
+	    	String endTime = (String) param.get("endTime");
+	    	sqlWhere.append(" and create_date<='"+endTime+"'");
+	    }
+        if(ObjectUtils.isNotEmpty(param.get("loginName"))){
+        	String loginName = (String) param.get("loginName");
+	    	sqlWhere.append(" and login_name like '%"+loginName+"%'");
+	    }
+        sqlWhere.append(" order by user_id desc ");
+		return paginate(pageNumber, pageSize, "select * ", sqlWhere.toString());
 	}
 	
 	/**
@@ -26,12 +42,27 @@ public class SysUser extends BaseSysUser<SysUser> {
 	 */
 	public Boolean userLogin(String username, String password) {
 		Boolean isFlag = false;
-		if (ObjectUtils.isNotEmpty(username)
-				&& ObjectUtils.isNotEmpty(password)) {
+		if (ObjectUtils.isNotEmpty(username)&& ObjectUtils.isNotEmpty(password)) {
 			SysUser sysUser = super.findFirst("select * from sys_user where login_name=? and password =?",username, password);
 			if (sysUser != null) {
 				isFlag = true;
 			}
+		}
+		return isFlag;
+	}
+	
+	/**
+	 * 更新用户状态
+	 * @param userId 用户编码
+	 * @param status 用户状态
+	 * @return
+	 */
+	public Boolean updateStatus(String userId,String status){
+		Boolean isFlag = false;
+		if (ObjectUtils.isNotEmpty(userId)&& ObjectUtils.isNotEmpty(status)) {
+			SysUser sysUser = super.findById(userId);
+			sysUser.setStatus(status);
+			sysUser.update();
 		}
 		return isFlag;
 	}

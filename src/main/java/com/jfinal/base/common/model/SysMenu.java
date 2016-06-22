@@ -1,6 +1,9 @@
 package com.jfinal.base.common.model;
 
+import java.util.Map;
+
 import com.jfinal.base.common.model.base.BaseSysMenu;
+import com.jfinal.base.utils.ObjectUtils;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -9,7 +12,34 @@ import com.jfinal.plugin.activerecord.Page;
 @SuppressWarnings("serial")
 public class SysMenu extends BaseSysMenu<SysMenu> {
 	public static final SysMenu dao = new SysMenu();
-	public Page<SysMenu> paginate(int pageNumber, int pageSize) {
-		return paginate(pageNumber, pageSize, "select *", "from sys_menu order by menu_id asc");
+	public Page<SysMenu> paginate(int pageNumber, int pageSize,Map<String,Object> param) {
+		StringBuffer sqlWhere = new StringBuffer(" from sys_menu where status<>-1 ");
+        if(ObjectUtils.isNotEmpty(param.get("menuName"))){
+        	String menuName = (String) param.get("menuName");
+	    	sqlWhere.append(" and menu_name like '%"+menuName+"%'");
+	    }
+        if(ObjectUtils.isNotEmpty(param.get("parentId"))){
+        	String parentId = (String) param.get("parentId");
+	    	sqlWhere.append(" and parent_id = "+parentId);
+	    }
+        sqlWhere.append(" order by menu_id desc ");
+		return paginate(pageNumber, pageSize, "select *", sqlWhere.toString());
+	}
+	
+	
+	/**
+	 * 更新用户状态
+	 * @param userId 用户编码
+	 * @param status 用户状态
+	 * @return
+	 */
+	public Boolean updateStatus(Integer menuId,Integer status){
+		Boolean isFlag = false;
+		if (ObjectUtils.isNotEmpty(menuId)&& ObjectUtils.isNotEmpty(status)) {
+			SysMenu sysUser = super.findById(menuId);
+			sysUser.setStatus(status);
+			sysUser.update();
+		}
+		return isFlag;
 	}
 }
