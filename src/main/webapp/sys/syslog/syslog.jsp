@@ -10,12 +10,12 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 系统日志 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-  <div class="text-c"> 日期范围：
+  <div class="text"> 日期范围：
     <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'startTime\')||\'%y-%M-%d\'}'})" id="startTime" name="startTime" value="" class="input-text Wdate" style="width:120px;"/>
     -
     <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'endTime\')}',maxDate:'%y-%M-%d'})" id="endTime" name="endTime" value="" class="input-text Wdate" style="width:120px;"/>
     <input type="text" name="logContext" id="logContext" placeholder="日志名称" style="width:250px" class="input-text"/>
-    <button name="" id="" class="btn btn-success" type="submit"  onclick ="javascript:queryTable()"><i class="Hui-iconfont">&#xe665;</i> 搜日志</button>
+    <button name="" id="" class="btn btn-success" type="submit"  onclick ="javascript:queryTable()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
   </div>
   <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
   <table class="table table-border table-bordered table-bg table-hover table-sort">

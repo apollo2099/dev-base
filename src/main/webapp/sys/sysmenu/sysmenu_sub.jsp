@@ -7,28 +7,25 @@
 <title>管理员列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r btn-refresh" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="text"> 日期范围：
-		<input type="text" onfocus="WdatePicker({startTime:'#F{$dp.$D(\'startTime\')||\'%y-%M-%d\'}'})" id="startTime" name="startTime" value="" class="input-text Wdate" style="width:120px;">
-		-
-		<input type="text" onfocus="WdatePicker({endTime:'#F{$dp.$D(\'endTime\')}',endTime:'%y-%M-%d'})" id="endTime" name="endTime" value="" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="loginName" name="loginName">
-		<button type="submit" class="btn btn-success" onclick="javascript:refreshTable()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+	   <span class="l">
+	   <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+	   <a href="javascript:;" onclick="admin_add('添加菜单','/sys/sysmenu/add?parentId=${parentId}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单</a>
+	   </span> 
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','/sys/sysuser/add','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> </div>
 	<table class="table table-border table-bordered table-bg table-sort">
 		<thead>
 			<tr>
-				<th scope="col" colspan="9">管理员列表</th>
+				<th scope="col" colspan="9">菜单列表</th>
 			</tr>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox" name="" value=""></th>
 				<th width="40">ID</th>
-				<th width="150">登录名</th>
-				<th width="100">用户名</th>
-				<th width="90">密码</th>
-				<th width="130">登录IP</th>
+				<th width="150">菜单名称</th>
+				<th width="100">菜单地址</th>
+				<th width="90">父类ID</th>
+				<th width="130">菜单排序</th>
 				<th width="100">是否已启用</th>
 				<th width="100">操作</th>
 			</tr>
@@ -57,9 +54,9 @@ function admin_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
 		 $.ajax({   
-		     url:'/sys/sysuser/delete',   
+		     url:'/sys/sysmenu/delete',   
 		     type:'post',   
-		     data:'userId='+id,   
+		     data:'menuId='+id,   
 		     async : true, //默认为true 异步   
 		     error:function(){   
 		        alert('error');   
@@ -75,7 +72,7 @@ function admin_del(obj,id){
 }
 /*管理员-编辑*/
 function admin_edit(title,url,id,w,h){
-	url =url+"?userId="+id;
+	url =url+"?menuId="+id;
 	layer_show(title,url,w,h);
 }
 /*管理员-停用*/
@@ -83,9 +80,9 @@ function admin_stop(obj,id){
 	layer.confirm('确认要停用吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
 	    $.ajax({   
-		     url:'/sys/sysuser/updateStatus',   
+		     url:'/sys/sysmenu/updateStatus',   
 		     type:'post',   
-		     data:'userId='+id+'&status=0',   
+		     data:'menuId='+id+'&status=0',   
 		     async : true, //默认为true 异步   
 		     error:function(){   
 		        alert('error');   
@@ -107,9 +104,9 @@ function admin_start(obj,id){
 	layer.confirm('确认要启用吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
 		$.ajax({   
-		     url:'/sys/sysuser/updateStatus',   
+		     url:'/sys/sysmenu/updateStatus',   
 		     type:'post',   
-		     data:'userId='+id+'&status=1',   
+		     data:'menuId='+id+'&status=1',   
 		     async : true, //默认为true 异步   
 		     error:function(){   
 		        alert('error');   
@@ -155,17 +152,17 @@ var defTable = $('.table-sort').dataTable(
             },
             "bProcessing": true, //开启读取服务器数据时显示正在加载中……特别是大数据量的时候，开启此功能比较好
             "bServerSide": true, //开启服务器模式，使用服务器端处理配置datatable。注意：sAjaxSource参数也必须被给予为了给datatable源代码来获取所需的数据对于每个画。 这个翻译有点别扭。开启此模式后，你对datatables的每个操作 每页显示多少条记录、下一页、上一页、排序（表头）、搜索，这些都会传给服务器相应的值。 
-            "sAjaxSource": "/sys/sysuser/query", //给服务器发请求的url
+            "sAjaxSource": "/sys/sysmenu/query?parentId=${parentId}", //给服务器发请求的url
 			"createdRow" : function(row, mData, index) {
-				$('td:eq(0)', row).html("<input type='checkbox' name='chx_default' value='" + mData.user_id + "'/>");
+				$('td:eq(0)', row).html("<input type='checkbox' name='chx_default' value='" + mData.menu_id + "'/>");
 			},
             "aoColumns": [ //这个属性下的设置会应用到所有列，按顺序没有是空
-                           {"mData": 'user_id'},
-                           {"mData": 'user_id'},
-                           {"mData": 'login_name'}, //mData 表示发请求时候本列的列明，返回的数据中相同下标名字的数据会填充到这一列
-                           {"mData": 'name'},
-                           {"mData": 'password'},
-                           {"mData": 'ip'},
+                           {"mData": 'menu_id'},
+                           {"mData": 'menu_id'},
+                           {"mData": 'menu_name'}, //mData 表示发请求时候本列的列明，返回的数据中相同下标名字的数据会填充到这一列
+                           {"mData": 'menu_url'},
+                           {"mData": 'parent_id'},
+                           {"mData": 'menu_order'},
                          ],
             "aoColumnDefs": [//和aoColums类似，但他可以给指定列附近爱属性
                 {sDefaultContent: '',aTargets: [ '_all' ]},
@@ -177,15 +174,15 @@ var defTable = $('.table-sort').dataTable(
             	var statusHtml;
                 if(aData.status==1){
           		  $('td:eq(6)', nRow).html('<span class="label label-success radius">已启用</span>');
-          		  statusHtml='<a style="text-decoration:none" onClick="admin_stop(this,\''+aData.user_id+'\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
+          		  statusHtml='<a style="text-decoration:none" onClick="admin_stop(this,\''+aData.menu_id+'\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
           	    }else{
           		  $('td:eq(6)', nRow).html('<span class="label radius">已停用</span>');
-          		  statusHtml='<a style="text-decoration:none" onClick="admin_start(this,\''+aData.user_id+'\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i></a>';
+          		  statusHtml='<a style="text-decoration:none" onClick="admin_start(this,\''+aData.menu_id+'\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i></a>';
           	    }
 
                 $('td:eq(7)', nRow).html(statusHtml+
-                                         '<a title="编辑" href="javascript:;" onclick="admin_edit(\'管理员编辑\',\'/sys/sysuser/edit\',\''+aData.user_id+'\',\'800\',\'500\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>'+ 
-                                         '<a title="删除" href="javascript:;" onclick="admin_del(this,\''+aData.user_id+'\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>');
+                                         '<a title="编辑" href="javascript:;" onclick="admin_edit(\'管理员编辑\',\'/sys/sysmenu/edit\',\''+aData.menu_id+'\',\'800\',\'500\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>'+ 
+                                         '<a title="删除" href="javascript:;" onclick="admin_del(this,\''+aData.menu_id+'\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>');
                 
             	$('td:eq(6)').addClass("td-status")
             	$('td:eq(7)').addClass("td-manage")
@@ -193,9 +190,7 @@ var defTable = $('.table-sort').dataTable(
                 return nRow;
             },
             "fnServerParams": function(aoData) {
-                aoData.push({"name": "loginName","value": $("#loginName").val()});
-                aoData.push({"name": "startTime","value": $("#startTime").val()});
-                aoData.push({"name": "endTime","value": $("#endTime").val()});
+                aoData.push({"name": "menuName","value": $("#menuName").val()});
             },
             "fnInitComplete": function(oSettings, json) { //表格初始化完成后调用 在这里和服务器分页没关系可以忽略
                 $("input[aria-controls='DataTables_Table_0']").attr("placeHolder", "请输入高手用户名");

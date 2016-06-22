@@ -13,21 +13,33 @@ import com.jfinal.plugin.activerecord.Page;
 public class SysMenu extends BaseSysMenu<SysMenu> {
 	public static final SysMenu dao = new SysMenu();
 	public Page<SysMenu> paginate(int pageNumber, int pageSize,Map<String,Object> param) {
-		StringBuffer sqlWhere = new StringBuffer(" from sys_menu where 1=1 ");
-	    if(ObjectUtils.isNotEmpty(param.get("startTime"))){
-	    	String startTime = (String) param.get("startTime");
-	    	sqlWhere.append(" and create_date>='"+startTime+"'");
+		StringBuffer sqlWhere = new StringBuffer(" from sys_menu where status<>-1 ");
+        if(ObjectUtils.isNotEmpty(param.get("menuName"))){
+        	String menuName = (String) param.get("menuName");
+	    	sqlWhere.append(" and menu_name like '%"+menuName+"%'");
 	    }
-	    if(ObjectUtils.isNotEmpty(param.get("endTime"))){
-	    	String endTime = (String) param.get("endTime");
-	    	sqlWhere.append(" and create_date<='"+endTime+"'");
-	    }
-        if(ObjectUtils.isNotEmpty(param.get("loginName"))){
-        	String loginName = (String) param.get("loginName");
-	    	sqlWhere.append(" and login_name like '%"+loginName+"%'");
+        if(ObjectUtils.isNotEmpty(param.get("parentId"))){
+        	String parentId = (String) param.get("parentId");
+	    	sqlWhere.append(" and parent_id = "+parentId);
 	    }
         sqlWhere.append(" order by menu_id desc ");
-		
 		return paginate(pageNumber, pageSize, "select *", sqlWhere.toString());
+	}
+	
+	
+	/**
+	 * 更新用户状态
+	 * @param userId 用户编码
+	 * @param status 用户状态
+	 * @return
+	 */
+	public Boolean updateStatus(Integer menuId,Integer status){
+		Boolean isFlag = false;
+		if (ObjectUtils.isNotEmpty(menuId)&& ObjectUtils.isNotEmpty(status)) {
+			SysMenu sysUser = super.findById(menuId);
+			sysUser.setStatus(status);
+			sysUser.update();
+		}
+		return isFlag;
 	}
 }
