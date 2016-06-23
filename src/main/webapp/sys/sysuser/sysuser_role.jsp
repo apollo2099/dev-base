@@ -14,36 +14,24 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="/sys/sysuser/updateUser" method="post" class="form form-horizontal" id="form-member-add">
-	<input type="hidden" class="input-text" name="sysUser.user_id" value="${sysUser.userId }">
+	<form action="/sys/sysuser/dealRole" method="post" class="form form-horizontal" id="form-member-add">
+	<input type="hidden" class="input-text" name="sysUserRole.user_id" value="${sysUser.userId }">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text"  placeholder="" id="loginName" name="sysUser.login_name" value="${sysUser.loginName }" readonly="readonly">
 			</div>
 		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>昵称：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text"  placeholder="" id="name" name="sysUser.name" value="${sysUser.name }">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">状态：</label>
+       <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">分配角色：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select class="select" size="1" name="sysUser.status" id="status" disabled="disabled">
-					<option value="" selected>请选择状态</option>
-					<option value="1" <c:if test="${sysUser.status==1 }">selected</c:if>>启动</option>
-					<option value="0" <c:if test="${sysUser.status==0 }">selected</c:if>>停用</option>
+				<select class="select" size="1" name="sysUserRole.role_id">
+					<option value="" selected>请选择角色</option>
+					<c:forEach items="${roleList }" var="role">
+					  <option value="${role.roleId }">${role.roleName }</option>
+					</c:forEach>
 				</select>
 				</span> </div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">备注：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="sysUser.description" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="textarealength(this,100)">${sysUser.description }</textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
-			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">

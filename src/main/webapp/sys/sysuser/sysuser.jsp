@@ -73,6 +73,28 @@ function admin_del(obj,id){
 	      });
 	});
 }
+
+function admin_reset(){
+	layer.confirm('确认重置密码？',function(index){
+		//此处请求后台程序，下方是成功后的前台处理……
+		 $.ajax({   
+		     url:'/sys/sysuser/resetpwd',   
+		     type:'post',   
+		     data:'userId='+id,   
+		     async : true, //默认为true 异步   
+		     error:function(){   
+		        alert('error');   
+		     },   
+		     success:function(data){   
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+                // 刷新数据表格
+				refreshTable();
+		     }
+	      });
+	});
+}
+
 /*管理员-编辑*/
 function admin_edit(title,url,id,w,h){
 	url =url+"?userId="+id;
@@ -185,7 +207,9 @@ var defTable = $('.table-sort').dataTable(
 
                 $('td:eq(7)', nRow).html(statusHtml+
                                          '<a title="编辑" href="javascript:;" onclick="admin_edit(\'管理员编辑\',\'/sys/sysuser/edit\',\''+aData.user_id+'\',\'800\',\'500\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>'+ 
-                                         '<a title="删除" href="javascript:;" onclick="admin_del(this,\''+aData.user_id+'\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>');
+                                         '<a title="删除" href="javascript:;" onclick="admin_del(this,\''+aData.user_id+'\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>'+
+                                         '<a title="重置密码" href="javascript:;" onclick="admin_reset(this,\''+aData.user_id+'\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe64b;</i></a>'+
+                                         '<a title="分配角色" href="javascript:;" onclick="admin_edit(\'分配角色\',\'/sys/sysuser/todealRole\',\''+aData.user_id+'\',\'800\',\'400\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe667;</i></a>');
                 
             	$('td:eq(6)').addClass("td-status")
             	$('td:eq(7)').addClass("td-manage")

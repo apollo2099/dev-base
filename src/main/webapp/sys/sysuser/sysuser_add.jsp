@@ -24,7 +24,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="password" name="sysUser.password">
+				<input type="password" class="input-text" value="" placeholder="" id="password" name="sysUser.password">
 			</div>
 		</div>
 		<div class="row cl">
@@ -40,6 +40,17 @@
 					<option value="" selected>请选择状态</option>
 					<option value="1">启动</option>
 					<option value="0">停用</option>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">分配角色：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" size="1" name="sysUserRole.role_id">
+					<option value="" selected>请选择角色</option>
+					<c:forEach items="${roleList }" var="role">
+					  <option value="${role.roleId }">${role.roleName }</option>
+					</c:forEach>
 				</select>
 				</span> </div>
 		</div>

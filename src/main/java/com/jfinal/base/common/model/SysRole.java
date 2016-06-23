@@ -1,5 +1,7 @@
 package com.jfinal.base.common.model;
 
+import java.util.List;
+
 import com.jfinal.base.common.model.base.BaseSysRole;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -9,7 +11,23 @@ import com.jfinal.plugin.activerecord.Page;
 @SuppressWarnings("serial")
 public class SysRole extends BaseSysRole<SysRole> {
 	public static final SysRole dao = new SysRole();
+	
+	/**
+	 * 查询角色分页信息
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
 	public Page<SysRole> paginate(int pageNumber, int pageSize) {
 		return paginate(pageNumber, pageSize, "select *", "from sys_role order by role_id asc");
+	}
+	
+	/**
+	 * 查询所有的角色信息
+	 * @return
+	 */
+	public List<SysRole> findAll(){
+		String sql ="select * from sys_role where status =1 ";
+		return super.find(sql);
 	}
 }
