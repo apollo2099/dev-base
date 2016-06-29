@@ -36,6 +36,7 @@
 				<td class="f-14">
 				    <a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','/sys/sysrole/edit','${role.roleId }')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 				    <a title="删除" href="javascript:;" onclick="admin_role_del(this,'${role.roleId }')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				    <a style="text-decoration:none" class="ml-5" onClick="deal_menu('分配资源','/sys/sysroleres?roleId=${role.roleId }' , ${role.roleId })" href="javascript:;" title="分配资源"><i class="Hui-iconfont">&#xe667;</i></a>
 				</td>
 			</tr>
 			</c:forEach>
@@ -71,6 +72,16 @@ function admin_role_del(obj,id){
 		     }
 	      });
 	});
+}
+
+/*图片-编辑*/
+function deal_menu(title,url,id){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
 }
 </script>
 </body>

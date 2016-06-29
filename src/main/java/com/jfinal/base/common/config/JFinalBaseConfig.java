@@ -12,6 +12,7 @@ import com.jfinal.base.common.model._MappingKit;
 import com.jfinal.base.module.sys.log.contraller.SysLogController;
 import com.jfinal.base.module.sys.menu.contraller.SysMenuController;
 import com.jfinal.base.module.sys.role.contraller.SysRoleController;
+import com.jfinal.base.module.sys.role.contraller.SysRoleResourceContraller;
 import com.jfinal.base.module.sys.user.contraller.SysUserController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -58,7 +59,8 @@ public class JFinalBaseConfig extends JFinalConfig{
 		me.add("/sys/sysuser", SysUserController.class,"/sys/sysuser");
 		me.add("/sys/sysmenu", SysMenuController.class,"/sys/sysmenu");
 		me.add("/sys/sysrole", SysRoleController.class,"/sys/sysrole");
-		me.add("/sys/syslog", SysLogController.class,"/sys/syslog");		
+		me.add("/sys/sysroleres", SysRoleResourceContraller.class,"/sys/sysroleres");
+		me.add("/sys/syslog", SysLogController.class,"/sys/syslog");
 	}
 	
 	public static C3p0Plugin createC3p0Plugin() {

@@ -1,5 +1,6 @@
 package com.jfinal.base.common.model;
 
+import java.util.List;
 import java.util.Map;
 
 import com.jfinal.base.common.model.base.BaseSysMenu;
@@ -24,6 +25,30 @@ public class SysMenu extends BaseSysMenu<SysMenu> {
 	    }
         sqlWhere.append(" order by menu_id desc ");
 		return paginate(pageNumber, pageSize, "select *", sqlWhere.toString());
+	}
+	
+	/**
+	 * 根据角色id查询管理资源信息
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param param
+	 * @return
+	 */
+	public Page<SysMenu> paginateRes(int pageNumber, int pageSize,Map<String,Object> param) {
+		StringBuffer sqlWhere = new StringBuffer(" from sys_menu m, sys_role_resource rs where m.status<>-1  and m.menu_id = rs.resource_id");
+        if(ObjectUtils.isNotEmpty(param.get("roleId"))){
+        	Integer roleId = (Integer) param.get("roleId");
+	    	sqlWhere.append(" and rs.role_id = "+roleId);
+	    }
+        sqlWhere.append(" order by m.menu_id desc ");
+		return paginate(pageNumber, pageSize, "select m.*", sqlWhere.toString());
+		
+	}
+	
+	
+	public List<SysMenu> findAll(){
+		String sql ="select *  from sys_menu where status<>-1 and parent_id=0";
+		return super.find(sql);
 	}
 	
 	
