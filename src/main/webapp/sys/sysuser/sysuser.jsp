@@ -74,7 +74,7 @@ function admin_del(obj,id){
 	});
 }
 
-function admin_reset(){
+function admin_reset(obj,id){
 	layer.confirm('确认重置密码？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
 		 $.ajax({   
@@ -86,8 +86,7 @@ function admin_reset(){
 		        alert('error');   
 		     },   
 		     success:function(data){   
-				$(obj).parents("tr").remove();
-				layer.msg('已删除!',{icon:1,time:1000});
+				layer.msg('重置成功!',{icon:1,time:1000});
                 // 刷新数据表格
 				refreshTable();
 		     }

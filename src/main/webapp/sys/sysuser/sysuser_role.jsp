@@ -15,7 +15,8 @@
 <body>
 <article class="page-container">
 	<form action="/sys/sysuser/dealRole" method="post" class="form form-horizontal" id="form-member-add">
-	<input type="hidden" class="input-text" name="sysUserRole.user_id" value="${sysUser.userId }">
+	<input type="hidden" class="input-text" name="sysUserRole.id" value="${sysUserRole.id }">
+	<input type="hidden" class="input-text" name="sysUserRole.user_id" value="${sysUserRole.userId }">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
 			<div class="formControls col-xs-8 col-sm-9">

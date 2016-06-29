@@ -8,4 +8,11 @@ import com.jfinal.base.common.model.base.BaseSysUserRole;
 @SuppressWarnings("serial")
 public class SysUserRole extends BaseSysUserRole<SysUserRole> {
 	public static final SysUserRole dao = new SysUserRole();
+	
+	public SysUserRole findByUserId(Integer userId){
+		String sql ="select * from sys_user_role where user_id ="+userId+"";
+		return dao.findFirst(sql);
+	}
 }
+
+

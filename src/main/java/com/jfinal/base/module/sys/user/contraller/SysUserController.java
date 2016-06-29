@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.util.security.MD5Encoder;
+
 import com.jfinal.base.common.model.SysLog;
 import com.jfinal.base.common.model.SysRole;
 import com.jfinal.base.common.model.SysUser;
 import com.jfinal.base.common.model.SysUserRole;
+import com.jfinal.base.utils.EncryptUtils;
 import com.jfinal.base.utils.ObjectUtils;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
@@ -52,7 +55,8 @@ public class SysUserController extends Controller {
 	public void login(){
         String password = getPara("password");
         String username = getPara("username");
-        Boolean isFlag = SysUser.dao.userLogin(username, password);
+		String pwdMd5 = EncryptUtils.encodeMD5String(password);
+        Boolean isFlag = SysUser.dao.userLogin(username, pwdMd5);
         if (isFlag) {
         	System.out.println("登录成功");
         	redirect("/index.jsp");
@@ -60,6 +64,7 @@ public class SysUserController extends Controller {
         	System.out.println("登录失败");
         	//error("登录失败");
         }
+		renderJson();
 	}
 	
 	
@@ -72,6 +77,9 @@ public class SysUserController extends Controller {
 	
 	public void saveUser(){
 		SysUser sysUser =super.getModel(SysUser.class);
+		String password = sysUser.getPassword();
+		String pwdMd5 = EncryptUtils.encodeMD5String(password);
+		sysUser.setPassword(pwdMd5);
 		sysUser.save();
 		Integer userId = sysUser.getUserId();
 		
@@ -112,12 +120,15 @@ public class SysUserController extends Controller {
 	}
 	
 	public void todealRole(){
-		String userId = getPara("userId");
+		Integer userId = getParaToInt("userId");
 		SysUser sysUser = SysUser.dao.findById(userId);
 		setAttr("sysUser", sysUser);
 		// 查询所有角色信息
 		List<SysRole> roleList = SysRole.dao.findAll();
 		setAttr("roleList", roleList);
+		// 查询用户角色关联关系
+		SysUserRole sysUserRole = SysUserRole.dao.findByUserId(userId);
+		setAttr("sysUserRole", sysUserRole);
 		
 		render("/sys/sysuser/sysuser_role.jsp");
 	}
@@ -125,7 +136,7 @@ public class SysUserController extends Controller {
 	
 	public void dealRole(){
 		SysUserRole sysUserRole =super.getModel(SysUserRole.class);
-		sysUserRole.deleteById(sysUserRole.getUserId());
+		sysUserRole.deleteById(sysUserRole.getId());
 		//  保存用户角色关联关系
 		sysUserRole.save();
 		renderJson();
@@ -138,7 +149,7 @@ public class SysUserController extends Controller {
 		Integer userId =getParaToInt("userId");
 		SysUser sysUser = SysUser.dao.findById(userId);
 		sysUser.setPassword("123456");
-		setAttr("sysUser", sysUser);
+		sysUser.update();
 		renderJson();
 	}
 	
