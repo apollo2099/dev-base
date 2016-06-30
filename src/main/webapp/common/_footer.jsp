@@ -21,5 +21,6 @@ pageContext.setAttribute("basePath",basePath);
 <script type="text/javascript" src="${basePath }lib/datatables/bootstrap.datatables.min.js"></script>
 <script type="text/javascript" src="${basePath }lib/jquery.form.js"></script>
 <script type="text/javascript" src="${basePath }lib/base.common.js"></script>
+<script type="text/javascript" src="${basePath }lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
 
 

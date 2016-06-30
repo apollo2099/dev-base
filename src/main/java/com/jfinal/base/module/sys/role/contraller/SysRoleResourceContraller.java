@@ -46,7 +46,7 @@ public class SysRoleResourceContraller extends Controller{
 		setAttr("roleId", roleId);
 		List<SysMenu> menuList = SysMenu.dao.findAll();
 		setAttr("menuList", menuList);
-		render("/sys/sysrole/sysrole_resource_add.jsp");
+		render("/sys/sysrole/sysrole_resource_add_bak.jsp");
 	}
 	
 	public void save(){
